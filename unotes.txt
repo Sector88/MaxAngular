@@ -1,0 +1,314 @@
+*** Installing bootstrap for Angular ***
+  
+  - npm install --save bootstrap@(check latest version)
+  - update angular.json under scripts array and add this as the first in the array to overwrite default css:
+    "node_modules/bootstrap/dist/css/bootstrap.min.css"
+
+*** Section 2: The Basics ***
+
+  15. How an Angular App gets Loaded and Started
+
+    - Angular app starts at the main.ts file.
+
+      - in main.ts file we pass AppModule to the bootstrap module, in the AppModule there's a bootstrap property that has an array value with a AppComponent (the root of the app) as an element. 
+      
+      - angular will look at the AppComponent.ts at start up and will be able to read the code we wrote on that file and then it will make the correlation between the selector app-root in AppComponent.ts and in the index.html file, and then it will read the AppComponent.html file associated with this component. 
+
+  18. Understanding the Role of AppModule and Component Declaration
+
+    - After creating an angular component, you must tell angular about it by adding it to the app.modules file under declarations. 
+
+  21. Working with Component Templates
+
+    - If you have a component html file that has 3 lines or less, you can opt in to not have a html file, and instead you can use template property in @Component decorator (instead of templateUrl) and then use back-ticks `` and have inline html in the component.ts file. 
+    
+      EXAMPLE: 
+        @Component({
+          selector: 'app-servers',
+          template: `
+          <h1>hello</h1>
+          <app-server></app-server>
+          <app-server></app-server>
+          `,
+          styleUrls: ['./servers.component.css']
+        })
+        
+    Same can be done with css, instead of styleUrls, use styles
+
+      EXAMPLE:
+        @Component({
+          selector: 'app-root',
+          templateUrl: './app.component.html',
+          // styleUrls: ['./app.component.css'] 
+          styles: [`
+            h3 {
+              color: dodgerblue;
+            }
+          `],
+        })
+
+  25. What is Databinding?
+  
+    - Databinding could be explained as communication --> Databinding = communication.
+
+    - to output data from your TS file code in the html code (html template), we can use 
+      - String Interpolation: {{ data }}
+      - property binding: [property] = "data" 
+      
+                  OR Vice-Versa
+
+    - react to (User) events
+      - event binding: (event) = "expression"
+
+                  OR 
+                  
+    - Two-Way-Binding: [{ngModel}] = "data"
+
+  26. String Interpolation
+
+    - If you define variables in your TS component file: 
+      
+      export class ServerComponent {
+        serverId: number = 10;
+        serverStatus: string = 'offline'
+      }
+
+    You can then use string Interpolation {{  }} in your html file and add an expression in between the curly braces. In the example below serverId is an expression. 
+
+      <p>{{ 'Server' }} with ID {{ serverId }} is {{ getServerStatus() }}</p>
+
+    - String Interpolation {{ }} must return in a string, either a variable that is a string, or a method/function (exmaples above) that results in a string, or a number because string Interpolation converts numbers into string. 
+
+    - Constructor() {} is a method executed at the time a component is created by angular. 
+
+  27. Property Binding
+
+    - [] indicates to angular that we are using property binding because we want to dynamicaly bind some property. 
+
+      - The general difference between the notation with and without brackets is important to understand in various contexts in Angular apps.
+
+        Without [] Angular interprets the content between the quotation marks as a string (just as it is).
+
+        With [] Angular tries to evaluate the expression between the quotation marks to a string.
+
+          - in the scenario of a boolean expression, you can have [disabled]=true without needing the "" for the boolean (true) used as the expression. You will NEED to have [] if you want to set an expression to any html attribute such as disabled.
+
+        EXAMPLE:
+
+          Interpret as string: name="Max"
+
+          Evaluate to string: [name]="'M' + 'a' + 'x'"
+
+          Evaluate to string: [name]="arrayWithAllNames[42]"
+
+          Evaluate to string: [name]="['M', 'a'].join('') + 'x'"
+
+          Evaluate to string: [name]="callTheNameOnTheDoorbellLabel()"
+
+          Evaluate to string: [name]="'Max'" (not very useful, but possible)
+
+  31. Passing and Using Data with Event Binding
+
+    - $event can be explained as/could be seen as a reserved variable name that can be used as a parameter of a method that is used in the html file when using event binding. 
+
+    In the example below event is being passed as an argument in the TS file and must be present as a parameter in the HTML file only as $event. 
+
+      EXAMPLE:
+
+        - component.ts:
+
+          onUpdateServerName(event: Event) {
+    this.serverName = (<HTMLInputElement>event.target).value;  
+  }
+      - component.html
+
+        <input 
+          type="text" 
+          class="form-control" 
+          (input)="onUpdateServerName($event)"
+        >
+
+  33. Two-Way-Databinding
+
+    - ngModel is a directive (two-way data binding) that tells angular to listen to anything you enter in the input field. 
+    
+    - two binding is binding data from both ends, in the example below [(ngModel)] is setting (binding data) to the input field that can be seen on the UI, a string that reads DadServer. That text in the input field can be deleted/altered to something else and it will actively change/alter the data that was first set/binded. Thats why its called two way binding. 
+    
+    - angular is split up in multiple modules and each module you'll need to import it in module.ts file's array. ngModel will need for FormsModule imported for it to work. 
+
+      CODE: 
+
+        <input type="text" [(ngModel)] = "name">
+         <p>{{ name }}</p>
+
+          EXAMPLE:
+
+            - component.ts
+
+              serverName = 'DadServer' 
+
+          - component.html
+
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)] = "serverName"
+            >
+
+      NOTE: ngModel above sets a string that will show up as text in the input field. Below the input field the text will also show DadServer. Thats one way out of two ways of binding. The second binding happens when you alter the text in the input field, it will change the p tag text below in real time. 
+
+        <p>{{serverName}}</p>
+
+  36. Understanding Directives
+
+    - Directives are instructions in the DOM. Three types of directives:
+
+      - Component
+
+        @Component({
+          selector: "my-app"
+        })
+
+        The selector is used as such <my-app></my-app> and that is a directive. 
+
+      - Structural directives
+
+        like *ngFor and *ngIf, used to change the DOM layout by adding and removing DOM elements
+
+      - Attribute directives
+
+        import {Directive, ElementRef, Renderer, Input} from '@angular/core';
+
+        @Directive({
+          selector: '[turnTextGreen]',
+        })
+        export class TurnGreenDirective {
+          // custom logic here...
+        }
+
+        and then this is how its used in the html file 
+
+        <p turnTextGreen>Hello Directive</p>
+
+  37. Using *ngIf to Output Data Conditionally
+
+    - The star at the beginning of ngIf, we are informing Angular that it is a structural directive and Angular will convert directive attribute to ng-template element. It changes the structure of our DOM, it either adds or doesn't add to the DOM. It doesn't take away from the DOM, if the ngIf statement is coded to not show something, then it won't be in the DOM at all, it won't exist. It will only exist if the statement meets the requirement for it to show up in the DOM. 
+
+      EXAMPLE: 
+
+        <p *ngIf="serverCreated">Server was created, server name is DAD123 </p>
+
+  38. Enhancing ngIf with an Else Condition
+
+    - In this example we use a local reference #noServer (think of it as a marker). When server created becomes true, the <p> element will show its text, if not angular will look for the local reference and show the text of that <p> element. 
+
+    We use ng-template because one of the main uses for <ng-template> is to hold template content that will be used by Structural directives, its never meant to be used like other HTML elements. ng-template is a virtual element and its contents are displayed only when needed (based on conditions).
+
+    ng-template is not exactly a true web element. When we compile our code, we will not see a ng-template tag in HTML DOM.
+
+    Angular will evaluate the ng-template element to convert it into a comment section in HTML DOM.
+
+      EXAMPLE: 
+
+        - component.ts
+
+          allowNewServer = false;
+          serverCreated = false;
+
+        - component.html
+
+          <p *ngIf="serverCreated; else noServer">Server was created, server name is {{ serverName }}</p>
+
+          <ng-template #noServer>
+            <p>No server was created</p>
+          </ng-template>
+  
+  39. Styling Elements Dynamically with ngStyle
+
+    - ngStyle is a attribute directive, unlike structural directive, attribute directive doesnt have a star * and doesnt add or remove elements. They only change the element they were placed on.
+
+    EXAMPLE:
+
+      <p [ngStyle]="{backgroundColor: getColor()}">{{ 'Server' }} with ID {{ serverId }} is {{ getServerStatus() }}</p>
+
+      NOTE: you can use [ngStyle]="{'background-color': getColor()}" to use as a valid javascript property, you'll need to wrap the JS property with ''
+
+  40. Applying CSS Classes Dynamically with ngClass
+
+    - ngClass allows us to dynamically add or remove CSS classes. It only adds a css class if a certain condition is true.
+
+    - below we added a class 'online' to the styles array with back ticks and made the text white. We used the serverStatus variable to make sure the class with white texts only shows up when the serverStatus is 'online'. Only then will the class show up in the console and the text will be white. 
+
+    EXAMPLE:
+
+      - component.ts
+
+      @Component({
+        selector: 'app-server',
+        templateUrl: './server.component.html',
+        styles: [`
+          .online {
+            color: white;
+          }
+        `]
+      }) 
+
+      - component.html
+
+        <p 
+          [ngStyle]="{backgroundColor: getColor()}"
+          [ngClass]="{online: serverStatus === 'online'}"
+        >{{ 'Server' }} with ID {{ serverId }} is {{ getServerStatus() }}</p>
+
+  41. Outputting Lists with ngFor
+   
+   - when *ngFor is used in the html file we defined a temporary variable 'server' and 'servers' is the variable we defined in the component.ts file.
+
+   EXAMPLE:
+
+    - component.ts
+
+      serverCreationStatus = 'No server was created!'
+      serverName = 'DadServer'
+      serverCreated = false;
+      servers= ['Test Server 1', 'Test Server 2']
+    
+      onCreateServer() {
+        this.serverCreated = true;
+        this.servers.push(this.serverName)
+        this.serverCreationStatus = "Server was created! Name is" + this.serverName;
+      }
+
+    - component.html
+
+      <app-server *ngFor="let server of servers"></app-server> 
+
+  43. Getting the Index when using ngFor
+
+    - In the example below, we are extracting the index of ngFor in html file instead of handling in the component.ts file. We are setting a variable i and using index, which is a reserved variable name in angular.
+
+      EXAMPLE: 
+
+        <h3 
+          *ngFor="let count of buttonLog; let i = index"
+          [ngClass] = "{logStyleChange: i >= 4}"
+          [ngStyle] = "{backgroundColor: i >= 4 ? 'blue' : 'yellow'}" 
+        >{{count}}</h3>
+
+   53. Adding Content to the Recipes Components
+
+    - In this video Max created a recipe.model.ts file that has a class called Recipe and that was used to define the type of the Recipe array in the recipe-list.component.ts file. 
+
+    - After google search this is this best answser to why we do this in TS:
+
+
+      -  Create your model using “Classes”. While TypeScript has interfaces that can provide this functionality, the Angular team recommends just using a bare ES6 class with strongly typed instance variables. ES6 classes allow you to (optionally) build out functionality around your models and also doesn't require you to be locked into a TypeScript specific feature. For these reasons, it's advisable to use classes for creating models.  
+
+      - You could use Interface, however interfaces are only at compile time. The Interface describes either a contract for a class or a new type. It is a pure Typescript element, so it doesn't affect Javascript.
+
+      - A model, and namely a class, is an actual JS function which is being used to generate new objects. 
+
+      stackoverflow: https://stackoverflow.com/questions/35453630/creating-model-classes-in-typescript
+
+  
+

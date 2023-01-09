@@ -1,0 +1,17 @@
+<hr>
+<h1>unit-assignment works!</h1>
+<div class="unit-container">
+  <button class="btn btn-primary" (click)="toggleContent($event)">
+    Display Details
+  </button>
+  <h3 *ngIf="showContent" class="content">Secret Password</h3>
+</div>
+
+<div class="log">
+  <h4>Button Log</h4>
+  <h3 
+    *ngFor="let count of buttonLog; let i = index"
+    [ngClass] = "{logStyleChange: i >= 4}"
+    [ngStyle] = "{backgroundColor: i >= 4 ? 'blue' : 'yellow'}" 
+  >{{count}}</h3>
+</div>
