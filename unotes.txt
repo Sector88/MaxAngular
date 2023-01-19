@@ -310,5 +310,14 @@
 
       stackoverflow: https://stackoverflow.com/questions/35453630/creating-model-classes-in-typescript
 
+ 66. Binding to Custom Properties
   
+*** Section 5: Components and Databinding Deep Dive ***
+              
+               -- See MaxAngSection5 Repo --
 
+  66. Binding to Custom Properties
+
+    - @Input() is used in server-element.component.ts file to help us expose/share/pipe a variable/property to 
+    it's parent component. Any component that invokes another component can BIND to that property/variable 
+    (receive a variable/property) from that child component by adding @Input() decorator. 
