@@ -314,10 +314,34 @@
   
 *** Section 5: Components and Databinding Deep Dive ***
               
-               -- See MaxAngSection5 Repo --
+               -- See MaxAngSection5 Folder --
 
   66. Binding to Custom Properties
 
-    - @Input() is used in server-element.component.ts file to help us expose/share/pipe a variable/property to 
-    it's parent component. Any component that invokes another component can BIND to that property/variable 
-    (receive a variable/property) from that child component by adding @Input() decorator. 
+    - @Input() is used in server-element.component.ts file to help us expose/share/pipe a variable/property to it's parent component. Any component that invokes another component can BIND to that property/variable (receive a variable/property) from that child component by adding @Input() decorator. 
+
+    - We can pass an argument to @Input('srvElement') as an alias to the property name that you are binding. 
+
+      EXAMPLE: 
+
+        - server-element.component.ts
+        
+          export class ServerElementComponent implements OnInit {
+            @Input('srvElement') element: {type: string, name:string, content: string};
+
+            constructor() { }
+
+            ngOnInit(): void { }
+          }
+
+        - app.component.html
+
+            <div class="row">
+              <div class="col-xs-12">
+                <app-server-element 
+                *ngFor="let serverElement of serverElements" 
+                [srvElement]="serverElement"
+                >
+                </app-server-element>
+              </div>
+            </div>

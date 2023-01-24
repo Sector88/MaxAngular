@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ServerElementComponent implements OnInit {
-  @Input() element: {type: string, name:string, content: string};
+  @Input('srvElement') element: {type: string, name:string, content: string};
 
   constructor() { }
 
