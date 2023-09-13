@@ -35,7 +35,6 @@ import { ServerElementComponent } from './server-element/server-element.componen
   imports: [
     BrowserModule,
     FormsModule,
-
   ],
   providers: [],
   bootstrap: [AppComponent]

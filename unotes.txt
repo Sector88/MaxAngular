@@ -20,8 +20,8 @@
 
   21. Working with Component Templates
 
-    - If you have a component html file that has 3 lines or less, you can opt in to not have a html file, and instead you can use template property in @Component decorator (instead of templateUrl) and then use back-ticks `` and have inline html in the component.ts file. 
-    
+    - If you have a component html file that has 3 lines or less, you can opt in to not have a html file, and instead you can use template property in @Component decorator (instead of templateUrl) and then use back-ticks `` and have inline html in the component.ts file.
+
       EXAMPLE: 
         @Component({
           selector: 'app-servers',
@@ -32,7 +32,7 @@
           `,
           styleUrls: ['./servers.component.css']
         })
-        
+
     Same can be done with css, instead of styleUrls, use styles
 
       EXAMPLE:
@@ -48,7 +48,7 @@
         })
 
   25. What is Databinding?
-  
+
     - Databinding could be explained as communication --> Databinding = communication.
 
     - to output data from your TS file code in the html code (html template), we can use 
@@ -161,7 +161,13 @@
 
   36. Understanding Directives
 
-    - Directives are instructions in the DOM. Three types of directives:
+    - Directives are instructions in the DOM. 
+    
+    - Structural directives are used for shaping or reshaping HTML DOM by adding, removing elements. These directives start with a * --> for example *ngFor
+
+    - Attribute directives are used to change the appearance or behavior of DOM element.
+    
+    - Three types of directives:
 
       - Component
 
@@ -235,7 +241,7 @@
 
   40. Applying CSS Classes Dynamically with ngClass
 
-    - ngClass allows us to dynamically add or remove CSS classes. It only adds a css class if a certain condition is true.
+    - ngClass is a attribute directive allows us to dynamically add or remove CSS classes. It only adds a css class if a certain condition is true.
 
     - below we added a class 'online' to the styles array with back ticks and made the text white. We used the serverStatus variable to make sure the class with white texts only shows up when the serverStatus is 'online'. Only then will the class show up in the console and the text will be white. 
 
@@ -308,8 +314,35 @@
 
       - A model, and namely a class, is an actual JS function which is being used to generate new objects. 
 
+      - Constructor is also being used and its a built in function that every class has and it's executed once you create a new instance of the class you created.
+
+      - Once you invoke a new instance of Recipe in the recipe-list.ts file, you will have to add/pass arguments that the constructor parameters has. 
+
       stackoverflow: https://stackoverflow.com/questions/35453630/creating-model-classes-in-typescript
 
+ 
+  57. Creating an "Ingredient" model
+
+      - If you're using Typescript in your project then you can setup your model.ts file like this 
+
+      export class Ingredient {
+        constructor(public name: string, public amount: number){ }
+      } 
+ 
+      INSTEAD of what we did in the Recipe model file
+
+      export class Recipe {
+        public name: string;
+        public description: string;
+        public imagePath: string;
+
+        constructor(name: string, desc: string, imagePath: string) {
+          this.name = name;
+          this.description = desc;
+          this.imagePath = imagePath;
+        }
+}
+ 
  66. Binding to Custom Properties
   
 *** Section 5: Components and Databinding Deep Dive ***
@@ -345,3 +378,13 @@
                 </app-server-element>
               </div>
             </div>
+
+
+    73. Using Local References in Templates
+
+        - Local reference helps you get access to elements (and their value property) in your HTML template. 
+
+        ** See cockpit-comp.html line 5 and 11 **
+
+
+    7

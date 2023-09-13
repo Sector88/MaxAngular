@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-server-element',
   templateUrl: './server-element.component.html',
   styleUrls: ['./server-element.component.css'],
+  encapsulation: ViewEncapsulation.None, 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ServerElementComponent implements OnInit {
