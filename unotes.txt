@@ -387,4 +387,43 @@
         ** See cockpit-comp.html line 5 and 11 **
 
 
-    7
+    77.  Understanding the Component Lifecycle
+
+        - ngChanges: This is the first hook we can hook into, its created right at the start when a new component is created, its also called when our bound @Input properties receive new values.
+
+        - ngOnInit: This method get executed once the component has been initialized. This does not mean we can see, it hasn't been added to the DOM yet/displayed to us. This phase is when Angular finished the basic initialization and our properties can now be accessed and initialized - in other words the object was created. It's also important to note that this phase run after the contructor() {}
+
+        - ngDoCheck - This will run multiple time because it will run whenever change detection runs (which is the system for Angular that determines whether something changed inside the template of the component) on every check Angular makes - when property value changed, use clicked somewhere, triggering events, timer fired, observable was resolved.
+
+        - ngAfterContentInit:  
+
+          - This is called whenever the content that is projected via ng-content has been initialized. The code between the selector.
+
+        - ngAfterContentChecked:
+
+          - Called when the changeDetection has checked the content we are projecting from ng-content.
+
+        - ngAfterViewInit:
+
+          - Called after the view of our component has been through the initialization phase and the view has been rendered. 
+
+        - ngAfterViewChecked:
+
+          - Called everytime our view has been checked, as in Angular has made sure all the changes that have been done are displaying (rendered) or no changes have been detected by Angular.
+
+        - ngOnDestroy:
+
+          - This is called when the object (component) is about to be destroyed by Angular. Good place to do clean up.  
+
+
+        SUMMARY
+
+          - ngAfterViewInit and ngAfterViewChecked are referring to the template of the component
+
+          - ngAfterContentInit and ngAfterContentChecked are referring to the code between the selector:
+
+            <selector>Code / Content</selector>
+
+          - Also Init means that i can access the code
+
+          - Checked means that the code was checked for changes 

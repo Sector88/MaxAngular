@@ -11,7 +11,7 @@ export class UnitAssignmentComponent {
   counter;
   
   constructor() {
-    console.log(this.buttonLog.length)
+    // console.log(this.buttonLog.length)
   }
   
   toggleContent(event) {
